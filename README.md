@@ -36,6 +36,57 @@ ORDER BY emp_no,title DESC
 
 select * from unique_title;
 
+--making a new table "retiring_title"
+
+SELECT title
+INTO retiring_title
+FROM unique_title
+
+-- Employee count by title
+
+SELECT COUNT (ce.title),ce.title
+FROM retiring_title as ce
+GROUP BY ce.title
+ORDER BY ce.count DESC
+;
+
+            --Deliverable 2: The Employees Eligible for the Mentorship Program
+			
+SELECT employees.emp_no,
+employees.first_name,
+employees.last_name,
+employees.birth_date, 
+dept_emp.from_date,
+dept_emp.to_date,
+titles.title
+INTO new_table1
+From employees
+INNER JOIN dept_emp
+ON employees.emp_no=dept_emp.emp_no
+INNER JOIN titles 
+ON dept_emp.emp_no = titles.emp_no
+WHERE (birth_date BETWEEN '1965-01-01' AND '1965-12-31'
+);
+
+select * from new_table;
+
+-- Use Dictinct with Orderby to remove duplicate rows
+
+SELECT DISTINCT ON (emp_no)
+emp_no,
+first_name,
+last_name,
+birth_date,
+from_date,
+to_date,
+title
+INTO mentorship_eligibilty
+FROM new_table1
+ORDER BY emp_no
+;
+
+select * from mentorship_eligibilty;
+
 ## Summary
 
 1940 employees are eligible for mentorship. However, 90398 employees are retiring. So, there are not enough qualified, retirement-ready employees in the departments to mentor the next generation of Pewlett Hackard employees.
